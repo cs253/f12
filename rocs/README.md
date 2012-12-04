@@ -43,7 +43,8 @@ interesting directions.  The two goals of the project, teaching web
 server design and developing a useful tool, are two sides of a single
 effort.
 
-** Conceptual design
+Conceptual design
+---------------
 
 It is helpful to simply the simple server to use more familiar
 concepts.  The basic concept is a procedure call.  There is the
@@ -62,20 +63,23 @@ Browser makes a TCP connection.  The server interprets the incoming
 text as HTTP and CGI (common gateway interface).  The Rocs server will
 support only the basic features of HTTP and CGI.
 
-** WeBWork server
+Use in WeBWork
+------------
 
 We will test the new web server by using it for WeBWork, the widely
 used online homework delivery system originated at University of
 Rochester, led by Michael Gage.  Mike will lead a parallel project to
 create server scripts to be called by the new web server.
 
-** Github repository
+Github repository
+--------------
 
 The repository for this project is https://github.com/cs253/f12.  The
 usage is almost identical to Mercurial, on which you are an expert
 now.  Just use 'git' instead of 'hg'.
 
-** Time line
+Time line
+-------
 
 We will start assigning the components to students on Tuesday Dec. 4.
 The instructor will run personal 20-minute code review sessions a week
@@ -90,8 +94,11 @@ The attendance at the coding camp is not required.  If you cannot
 attend, choose the type of work that would help others without you
 being there, e.g. writing test cases.
 
-* Components
-** HttpServer
+Components
+========
+
+HttpServer
+---------
 
 calss HttpServer
   def process( request )
@@ -114,7 +121,8 @@ server = HttpServer.new { |s|
 
 server.start
 
-** TcpServer
+TcpServer
+--------
 
 class TcpServer
    def initialize( http )
@@ -133,19 +141,23 @@ end
 
 Use Ruby 'socket' package.   
 
-** HttpRequest
+HttpRequest
+----------
 
 Parse the input text and create an object with path and a hashtable
 containing all key-value pairs.
 
-** Logger
+Logger
+------
 
 Support Logger.warn, Logger.error, and Logger.info calls.  Keep logs in a file on disk.
 
 
+Resources
+=======
 
-* Resources
-** web programming using Ruby CGI
+web programming using Ruby CGI
+---------------------------
 
 You can create web page texts much easier using the 'cgi' module.  It
 provides translation to wire formats, e.g. '/' to %2F, using
@@ -154,7 +166,8 @@ and pages with cookies and sessions.  See
 
 http://www.ruby-doc.org/docs/ProgrammingRuby/html/web.html
 
-** webrick web server toolkit
+webrick server toolkit
+-----------------
 
 It is developed by TAKAHASHI Masayoshi and GOTOU YUUZOU.  It supports
 HTTP, CGI servelets, HTTPS, proxy, and authentication.  It is
@@ -162,7 +175,8 @@ distributed with core Ruby in lib/webrick.  A copy of the code is in
 class repos [repos]/material/webrick.  The core functions of the HTTP
 server are implemented in the scripts in webrick/httpserver/.
 
-** thin web server
+thin web server and the event machine
+-------------------------------
 
 "Thin is a Ruby web server that glues together 3 of the best Ruby libraries in web history:
   * the Mongrel parser: the root of Mongrel speed and security
