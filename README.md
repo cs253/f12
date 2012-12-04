@@ -9,6 +9,14 @@ Note that git requires you to specify what changes to include in a commit by usi
 
 To set user name/email: git config --global user.name "..."  and git config --global user.email "..."
 
+Help references for git:
+========================
+
+website: http://gitref.org/
+
+pdf cheat sheet:  http://byte.kde.org/~zrusin/git/git-cheat-sheet-medium.png
+
+
 Files
 =====
 rocs: the directory for the minimalist web server, single threaded, basic GET/POST, written in Ruby.
