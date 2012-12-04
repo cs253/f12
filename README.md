@@ -16,3 +16,12 @@ rocs: the directory for the minimalist web server, single threaded, basic GET/PO
 rocs/README.md: description of the design
 
 webwork/README.md: the link to the webwork project
+
+Resources
+=========
+
+Github bootcamp
+---------------
+
+https://help.github.com/categories/54/articles
+

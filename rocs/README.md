@@ -74,21 +74,30 @@ create server scripts to be called by the new web server.
 Github repository
 --------------
 
-The repository for this project is https://github.com/cs253/f12.  The
-usage is almost identical to Mercurial, on which you are an expert
-now.  Just use 'git' instead of 'hg'.
+Create your free github account if you haven't done so.  
+
+Go to the project repositories, https://github.com/cs253/f12 for the web
+server and https://github.com/mgage/standalone-question-renderer for
+the WeBWork server.
+
+Click 'fork' to create a branch in your github.
+
+Once you have completed a draft implementation and ready for code
+review, create a 'pull request'.  Mike and I will give you feedback and
+may ask for changes before merging your files into the root repositories.
 
 Time line
 -------
 
 We will start assigning the components to students on Tuesday Dec. 4.
-The instructor will run personal 20-minute code review sessions a week
-later at Tuesday Dec. 11 and Wednesday day time.  A sign-up sheet will
-be posted.  We will put the complete system together by sitting
-together in a coding camp.  Lunch will be provided.  I have reserved
-the lecture room for two afternoons Thursday Dec. 13 and Friday
-afternoon 12pm to 5pm.  We shouldn't need 10 hours.  The reservation
-is an upperbound.
+Pick a component to work on.  Complete the design first.  Ask for
+comments through a pull request by Friday evening.  Complete the
+implementation.  Ask for comments by Tuesday evening.
+
+Then we will put the complete system together by sitting together in a
+coding camp.  Lunch will be provided.  I have reserved the lecture
+room for two afternoons Thursday Dec. 13 and Friday afternoon 12pm to
+5pm.  We shouldn't need 10 hours.  The reservation is an upperbound.
 
 The attendance at the coding camp is not required.  If you cannot
 attend, choose the type of work that would help others without you
@@ -151,6 +160,15 @@ Logger
 ------
 
 Support Logger.warn, Logger.error, and Logger.info calls.  Keep logs in a file on disk.
+
+Echo server
+---------
+
+List the received information on a web page and send it back.  Useful for debugging.
+
+Assume that the input is a hash table in Json format and being piped into the script.
+
+Use 'cgi' to help creating a web page.  See the link in the Resources below.
 
 
 Resources
