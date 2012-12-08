@@ -1,0 +1,11 @@
+Chenchen Qu
+TCP Server Design
+
+1. server_start and server_close methods to initialize the server and shut it down
+2. a client_accept method to store each accepted connetion with their Host and Port into a Hash table
+3. Not sure if a run_heartbeat method is needed to keep testing each connection, set a time limit and if timeout than actively shut down the connection
+4. a request method for receiving each request from the client and using HttpRequest to translate it.
+5. a send_to_http method sending the request to httpserver for further operation.
+
+Probabaly have many flaws in it, looking for feed back and I will refine it while I'm trying to code it.
+Haven't desided any patterns to use yet.
