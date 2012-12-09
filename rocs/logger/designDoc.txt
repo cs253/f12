@@ -1,0 +1,13 @@
+Julian Lunger
+jlunger@u.rochester.edu
+CSC253: Final Project
+
+Logger
+
+The logger will be a singleton object used by Ruby code. There will be three supported public methods:
+- Logger.warn : For problems that arise but do not prevent continued program operation.
+- Logger.error : For problems that arise that halt program operation.
+- Logger.info : For general information describing program operation.
+
+The logs will be stored in a file on disk in the logger director. They will always be appended to the end of the file. The file will be named "logs.log".
+
