@@ -1,16 +1,19 @@
 require 'yaml'
+require 'singleton'
 
 class ConfigIO
+    include Singleton
+
     attr_reader :config
 
     def initialize
-        @@default = {}
+        @default = {}
         #TODO someone needs to fill in the default config
         @config = Hash.new
     end
 
     def unify_default
-        @@default.each{ |k,v|
+        @default.each{ |k,v|
             @config[k] = v if not @config.key? k
             @config[k] = v if @config[k] = nil
         }
