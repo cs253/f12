@@ -156,6 +156,11 @@ HttpRequest
 Parse the input text and create an object with path and a hashtable
 containing all key-value pairs.
 
+Config
+-----
+
+Environment variables and values such as the CGI bin path, stored and retrieved from a file on disk.
+
 Logger
 ------
 

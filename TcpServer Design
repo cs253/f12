@@ -1,0 +1,22 @@
+TcpServer Design
+
+class TcpServer
+* goal - implement a one thread TcpServer
+* member variables
+status - denotes the status of TcpServer - start, stop, running
+logger - log each meaningful info/exception
+config - denotes what conifg this TcpServer depends on
+socket - denotes listening socket of TcpServer
+
+* member functions
+initialize (config, http)- according to config, init socket of TcpServer.
+start - start TcpServer
+   change server status to running
+   one thread's processing loop
+      uses IO.select to detect kinds of events
+      when one client connects TcpServer, non-blocking accept it
+      when clients' data comes, call HttpRequest.parse to parse Clients' request, then call HttpServer.process to pass the request to http, send the results back
+   change server status to stop
+
+shutdown - close TcpServer
+   clear TcpServer socket
