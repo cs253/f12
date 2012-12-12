@@ -9,7 +9,7 @@ class HttpRequest
         # parse URI and its query string
         uri = URI(request_text)
         @path = uri.path
-        @args = parse_args(uri.query)
+        @args = uri.nil? ? {} : parse_args(uri.query)
     end
 
     private
