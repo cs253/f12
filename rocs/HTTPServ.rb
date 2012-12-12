@@ -13,6 +13,8 @@ class HttpServer
         wait_thr.join
         response=stdout.read
         error=stderr.read
+        stdout.close
+        stderr.close
         if error!=""
             @log.error(error)
             return error
