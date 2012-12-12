@@ -8,8 +8,8 @@ class HttpRequest
     def initialize(request_text)
         # parse URI and its query string
         uri = URI(request_text)
-        @path = uri.path
-        @args = uri.nil? ? {} : parse_args(uri.query)
+        @path = uri.path[/\/.*/] || "/"
+        @args = uri.query.nil? ? {} : parse_args(uri.query)
     end
 
     private
