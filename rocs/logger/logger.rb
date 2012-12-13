@@ -17,17 +17,17 @@ class Logger
 
 	def initialize
 		@logFile = "changeme.log"
-		@configAlreadySet = false
+		@logFileFrozen = false
 		@writeToStderr = false
 	end
 
 	def setConfig(config)
-		if @configAlreadySet
-			@@instance.warn "Config already set-- cannot be set a second time, ignoring."
+		if @logFileFrozen
+			@@instance.warn "Config already set or log file already used-- cannot be set a second time, ignoring."
 			return
 		end
 
-		@writeToStderr = config.config["write_to_stderr"].include?("true")
+		@writeToStderr = config.config["write_to_stderr"].include?("true") if config.config["write_to_stderr"]
 		@logFile = config.config["log_file"]
 		@configAlreadySet = true
 	end
@@ -49,6 +49,7 @@ class Logger
 	end
 
 	def log(type, string)
+		@logFileFrozen = true
 		line = getPrefix(type) + string
 		$stderr.puts line if @writeToStderr
 		writeToFile(line)
