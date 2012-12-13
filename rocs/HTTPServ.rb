@@ -9,11 +9,9 @@ class HttpServer
     attr_accessor :port
     attr_accessor :cgi_bin_path
     attr_accessor :config_file
-    attr_accessor :config
     cgi_bin_path="cgi_bin"
     config_file="default.yml"
     def process(req)
-        
         request=HttpRequest.new(req)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
@@ -49,10 +47,13 @@ class HttpServer
     def initialize
         # is it really this simple?
         # it seems like it shouldnt be but is.
+        @config=ConfigIO.instance
+        @config.read
+        cgi_bin_path=@config.config[cgi_bin_path]
+        host=@config.config[host]
+        port=@config.config[port]
         yield self
         @log=Logger.instance
-        config=ConfigIO.instance
-        config.read
     end
 end
 
