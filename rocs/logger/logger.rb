@@ -1,6 +1,30 @@
+# Singleton logger.
+# Written by Julian Lunger for CSC 253 -- rocs project.
+
+=begin
+	How to use:
+	require "./logger.rb"
+	l = Logger.instance
+	l.info "The logger is starting up."
+	l.warn "The logger is getting tired."
+	l.error "The logger has fallen asleep."
+	l.info "The logger has woken again."
+=end
+
 class Logger
 	def initialize
 		@logFile = "changeme.log"
+		@configAlreadySet = false
+	end
+
+	def setConfig(config)
+		if @configAlreadySet
+			@@instance.warn "Config already set-- cannot be set a second time, ignoring."
+			return
+		end
+
+		@logFile = config.config["config_file"]
+		@configAlreadySet = true
 	end
 	
 	def error(string)
@@ -39,12 +63,3 @@ class Logger
 
 	private_class_method :new
 end
-
-# l = Logger.instance
-# l.info "The logger is starting up."
-# sleep 1
-# l.warn "The logger is getting tired."
-# sleep 1
-# l.error "The logger has fallen asleep."
-# sleep 1
-# l.info "The logger has woken again."
