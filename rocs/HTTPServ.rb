@@ -1,6 +1,6 @@
 require 'open3'
 require 'json'
-#require './tcperver'
+require './tcpserver'
 require './configio'
 require './logger/logger.rb'
 require './HttpRequest/HttpRequest.rb'
@@ -56,13 +56,6 @@ class HttpServer
         port=@config.config[port]
         yield self
         @log=Logger.instance
-    end
-end
-
-class TcpServer
-    def initialize (httpserv, config)
-    end
-    def start
     end
 end
 
