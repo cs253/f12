@@ -21,6 +21,9 @@ class HttpRequestTests < Test::Unit::TestCase
         'http://www.bar.com/top//sub?key=val' =>
             ['/top//sub',
             {'key' => 'val'}],
+        'http://www.bar.com/path?foo%09bar=bar%09foo' =>
+            ['/path',
+            {"foo bar" => "bar\tfoo"}],
     }
 
     #create tests for each case
@@ -40,9 +43,10 @@ class HttpRequestTests < Test::Unit::TestCase
             result = HttpRequest.new(input)
 
             expected[1].each{|arg, val|
+                method_name = arg.split().join('_')
                 assert_equal(
                     val,
-                    result.send(arg.to_s)
+                    result.send(method_name)
                 )
             }
         end
