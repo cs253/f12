@@ -15,7 +15,7 @@ class Logger
 	def initialize
 		@logFile = "changeme.log"
 		@configAlreadySet = false
-		@writeToStderr = true
+		@writeToStderr = false
 	end
 
 	def setConfig(config)
@@ -47,7 +47,7 @@ class Logger
 
 	def log(type, string)
 		line = getPrefix(type) + string
-		$stderr.puts line
+		$stderr.puts line if @writeToStderr
 		writeToFile(line)
 	end
 		
