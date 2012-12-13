@@ -11,11 +11,11 @@ class RawEchoServer
   end
   def initialize
     @port = 8080
-    yield self
+    yield self if block_given?
   end
 end
 
 # Start a server if run as a script
-if $0 = __FILE__
+if $0 == __FILE__
   RawEchoServer.new.start
 end
