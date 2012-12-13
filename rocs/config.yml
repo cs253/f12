@@ -1,2 +1,4 @@
 log_to_stderr: yes
 log_file: server.log
+Ip: 0.0.0.0
+Port: 8080
