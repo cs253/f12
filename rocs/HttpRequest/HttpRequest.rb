@@ -1,6 +1,6 @@
 
 require 'json'
-require 'nokogiri'
+#require 'nokogiri'
 require 'stringio'
 require 'uri'
 require 'webrick'
@@ -23,7 +23,7 @@ class HttpRequest
         @type = req_spoof.request_method
         @path = req_spoof.path
         @header = req_spoof.header
-        @query = req_spoof.query.nil? or req_spoof.query.empty? ? {} : parse_args(req_spoof.query)
+        @query = req_spoof.query
         @body = req_spoof.body.nil? ? {} : parse_body(req_spoof.body)
     end
 
@@ -70,8 +70,8 @@ class HttpRequest
         case @header['content-type']
         when 'application/json'
             body = JSON.parse(content)
-        when 'application/xml', 'text/xml'
-            body = Hash.from_xml(Nokogiri::XML.parse(content))
+        #when 'application/xml', 'text/xml'
+        #    body = Hash.from_xml(Nokogiri::XML.parse(content))
         end
         return body
     end
