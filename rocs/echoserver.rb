@@ -1,3 +1,4 @@
+#!/usr/bin/ruby
 # Design:
 # (1) Accept STDIN as hash in JSon format
 # (2) Convert the JSon format hash to a ruby hash
