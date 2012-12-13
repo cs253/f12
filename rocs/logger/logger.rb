@@ -23,7 +23,7 @@ class Logger
 			return
 		end
 
-		@logFile = config.config["config_file"]
+		@logFile = config.config["log_file"]
 		@configAlreadySet = true
 	end
 	
