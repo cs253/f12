@@ -17,15 +17,28 @@ class HttpRequestTests < Test::Unit::TestCase
             {'arg1' => 'val1', 'arg2' => 'val2'} ]
     }
 
-    #make a test for each case
+    #create tests for each case
     @@cases.each do |input, expected|
-        test_name = ("test_" + input).to_sym
+        basic_test_name = ("test_basic_" + input).to_sym
+        meta_test_name = ("test_meta_" + input).to_sym
 
-        send :define_method, test_name do
+        send :define_method, basic_test_name do
             result = HttpRequest.new(input)
 
             assert_equal(expected[0], result.path)
             assert_equal(expected[1], result.args)
+
+        end
+
+        send :define_method, meta_test_name do
+            result = HttpRequest.new(input)
+
+            expected[1].each{|arg, val|
+                assert_equal(
+                    val,
+                    result.send(arg.to_s)
+                )
+            }
         end
     end
 end
