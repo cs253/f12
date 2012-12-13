@@ -1,16 +1,26 @@
 require 'open3'
 require 'json'
+#require './tcperver'
+require './configio'
+require './logger/logger.rb'
+require './HttpRequest/HttpRequest.rb'
 class HttpServer
     attr_accessor :host
     attr_accessor :port
     attr_accessor :cgi_bin_path
+    attr_accessor :config_file
+    attr_accessor :config
     cgi_bin_path="cgi_bin"
-    def process( request )
+    config_file="default.yaml"
+    def process(req)
+        
+        request=HttpRequest.new(req)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
         # return the results of the script
-        stdin,stdout,stderr,wait_thr=Open3.popen3("#{cgi_bin_path}/#{request.path} #{request.args.to_json}")
-        stdin.close
+        stdin,stdout,stderr,wait_thr=Open3.popen3("#{cgi_bin_path}#{request.path}")
+        stdin.write request.args.to_json
+        stdin.close 
         wait_thr.join
         response=stdout.read
         error=stderr.read
@@ -33,36 +43,24 @@ class HttpServer
         # should be done with the tcp server
         # only that TCPServ should call HTTPServ
         # and then have the results returned.
-        tcp = TcpServer.new( self )
+        tcp = TcpServer.new( self , config)
         tcp.start
     end
     def initialize
         # is it really this simple?
         # it seems like it shouldnt be but is.
         yield self
-        @log=Logger.new()
+        @log=Logger.instance
+        config=ConfigIO.instance
+        config.read
     end
 end
 
-class Logger
-    def warn(str)
-    end
-    def info(str)
-    end
-    def error(str)
-        print "we have an error\n"
-    end
-end
 class TcpServer
-    def initialize (httpserv)
+    def initialize (httpserv, config)
     end
     def start
     end
-end
-
-class Request
-    attr_accessor :path
-    attr_accessor :args
 end
 
 server = HttpServer.new { |s|
@@ -76,5 +74,5 @@ req.path="test.rb"
 req.args=Hash.new()
 
 server.start
-print server.process(req)
+print server.process("")
 
