@@ -1,2 +1,2 @@
-config_file: config.log
 log_to_stderr: true
+log_file: server.log
