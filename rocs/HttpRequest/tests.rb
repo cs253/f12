@@ -70,26 +70,25 @@ class HttpRequestTests < Test::Unit::TestCase
         http = sample.to_http
 
         basic_test_name = ("test_basic_" + comment).to_sym
-        #meta_test_name = ("test_meta_" + comment).to_sym
+        meta_test_name = ("test_meta_" + comment).to_sym
 
         send :define_method, basic_test_name do
-            puts http
             result = HttpRequest.new(http)
 
             assert_equal(sample.path, result.path, http)
             assert_equal(sample.query, result.query, http)
         end
 
-        #send :define_method, meta_test_name do
-        #    result = HttpRequest.new(input)
+        send :define_method, meta_test_name do
+            result = HttpRequest.new(http)
 
-        #    expected[1].each{|arg, val|
-        #        method_name = arg.split().join('_')
-        #        assert_equal(
-        #            val,
-        #            result.send(method_name)
-        #        )
-        #    }
-        #end
+            sample.query.each{|arg, val|
+                method_name = arg.split().join('_')
+                assert_equal(
+                    val,
+                    result.send(method_name)
+                )
+            }
+        end
     end
 end
