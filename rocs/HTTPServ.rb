@@ -14,7 +14,7 @@ class HttpServer
     def process(req)
         @log.debug(req)
         request=HttpRequest.new(req)
-        @log.info("called:\t"+request.path.to_s+"\n\twith arguments:\t"+request.query.to_json.to_s)
+        @log.info("\n\tcalled:\t"+request.path.to_s+"\n\twith arguments:\t"+request.query.to_json.to_s)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
         # return the results of the script
@@ -27,7 +27,7 @@ class HttpServer
         stdout.close
         stderr.close
         if error!=""
-            @log.error(error)
+            @log.error("\n\tScript error:\t"+error.to_s)
             return error
         else
             return response
