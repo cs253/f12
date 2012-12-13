@@ -6,27 +6,60 @@
 
 require 'rubygems'
 require 'json'
-require 'cgi'
+require 'xmlsimple'
+# require 'cgi'
 
-cgi = CGI.new('html3')
-json_hash = STDIN.gets
-ruby_hash = JSON.parse(json_hash).sort
+# cgi = CGI.new('html3')
+input = File.read('test/tricky.xml')#STDIN.gets
+content_type = input.split[input.split.index("Content-Type:") + 1]
 
-#Use CGI to create and HTML string and
-cgi.out {
-  cgi.html {
-    cgi.body {
-      ruby_hash.inject("") { |r,e|
-        r += "<h3>#{e[0]}:</h3>" \
-             + "<ol>" \
-             + e[1].inject("") { |r,e| r += "<li>#{e}</li>" } \
-             + "</ol>"
-      }
+content_headers = input.split("\n\n")[0]
+
+if content_type == "text/xml"
+  ruby_hash = XmlSimple.xml_in(input).sort
+elsif content_type == "application/json"
+  ruby_hash = JSON.parse(input.split("\n\n")[1]).sort
+else raise "Input not in application/json or text/xml format."
+end
+
+class Object
+  def to_html
+    self.to_s.to_html
+  end
+end
+
+class Hash
+  def to_html
+    self.inject("") { |r,e| 
+      r += "<h3>#{e[0]}:</h3>" + "<ul>" + e[1].to_html + "</ul>"
     }
-  }
-}
+  end
+end
+
+class Array
+  def to_html
+    self.inject("") { |r,e|
+      r += "<li>" + e.to_html + "</li>"
+    }
+  end
+end
+
+class String
+  def to_html
+    "<li>" + self + "</li>"
+  end
+end
 
 
+STDOUT.puts( content_headers.split("\n").inject(""){|r,e| r += "<p>#{e}</p>"} + ruby_hash.to_html )
+
+# cgi.out {
+#   cgi.html {
+#     cgi.body {
+#         content_headers.split("\n").inject(""){|r,e| r += "<p>#{e}</p>"} + ruby_hash.to_html
+#     }
+#   }
+# }
 
 # 3 line echo server
 #server = TCPServer.new('127.0.0.1', '8080')
