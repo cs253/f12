@@ -1,4 +1,5 @@
 require 'open3'
+require 'json'
 class HttpServer
     attr_accessor :host
     attr_accessor :port
@@ -8,7 +9,7 @@ class HttpServer
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
         # return the results of the script
-        stdin,stdout,stderr,wait_thr=Open3.popen3("ruby #{cgi_bin_path}/#{request.path} #{request.args}")
+        stdin,stdout,stderr,wait_thr=Open3.popen3("#{cgi_bin_path}/#{request.path} #{request.args.to_json}")
         stdin.close
         wait_thr.join
         response=stdout.read
