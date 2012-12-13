@@ -18,6 +18,9 @@ class HttpRequestTests < Test::Unit::TestCase
         'www.bar.com?foo%20bar=bar%20foo' => # key/val pair with spaces
             ['/',
             {'foo bar' => 'bar foo'}],
+        'www.bar.com/top//sub?key=val' =>
+            ['/top//sub',
+            {'key' => 'val'}],
     }
 
     #create tests for each case
