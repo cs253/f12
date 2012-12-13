@@ -1,12 +1,9 @@
-#
 # tcpserver.rb -- TcpServer Class
-#
 # Author: Pengcheng Li <pli@cs.rochester.edu> 
-#
 
 require 'socket'
 #require 'config'
-require './logger.rb'
+require './logger/logger.rb'
 
 #module MicroServer
 
@@ -72,7 +69,7 @@ HttpServer
           puts "listening"
               puts "have client"
               client_sock = @sock.accept
-              if client_sock`
+              if client_sock
                 puts "#{client_sock}"
                 puts "some client is coming"
 
