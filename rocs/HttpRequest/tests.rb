@@ -81,11 +81,10 @@ class HttpRequestTests < Test::Unit::TestCase
         #meta_test_name = ("test_meta_" + comment).to_sym
 
         send :define_method, basic_test_name do
-            puts http 
-            #result = HttpRequest.new(http)
+            result = HttpRequest.new(http)
 
-            #assert_equal(sample.path, result.path, http)
-            #assert_equal(sample.query, result.query, http)
+            assert_equal(sample.path, result.path, http)
+            assert_equal(sample.query, result.query, http)
         end
 
         #send :define_method, meta_test_name do
