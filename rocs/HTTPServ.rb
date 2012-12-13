@@ -11,7 +11,7 @@ class HttpServer
     attr_accessor :config_file
     attr_accessor :config
     cgi_bin_path="cgi_bin"
-    config_file="default.yaml"
+    config_file="default.yml"
     def process(req)
         
         request=HttpRequest.new(req)
@@ -68,10 +68,6 @@ server = HttpServer.new { |s|
   s.port = 8000
   s.cgi_bin_path = "cgi_bin"
 }
-
-req=Request.new()
-req.path="test.rb"
-req.args=Hash.new()
 
 server.start
 print server.process("")
