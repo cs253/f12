@@ -63,4 +63,3 @@ class Logger
 
 	private_class_method :new
 end
-
