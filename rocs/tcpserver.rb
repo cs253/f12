@@ -1,12 +1,9 @@
-#
 # tcpserver.rb -- TcpServer Class
-#
 # Author: Pengcheng Li <pli@cs.rochester.edu> 
-#
 
 require 'socket'
 #require 'config'
-require './logger.rb'
+require './logger/logger.rb'
 
 #module MicroServer
 
@@ -49,11 +46,11 @@ HttpServer
       @logger = @config[:Logger]
 
       #create IPv4 socket only
-#      @sock = TCPServer.new(@config[:Ip], @config[:Port])
-      @sock = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
-      sockaddr = Socket.pack_sockaddr_in( @config[:Port], @config[:Ip] )
-      @sock.bind( sockaddr )
-      @sock.listen(50)
+      @sock = TCPServer.new(@config[:Ip], @config[:Port])
+#      @sock = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
+#      sockaddr = Socket.pack_sockaddr_in( @config[:Port], @config[:Ip] )
+#      @sock.bind( sockaddr )
+#      @sock.listen(50)
       @config[:Port] = @sock.addr[1] if @config[:Port] == 0
 
     end
@@ -70,45 +67,20 @@ HttpServer
       while @status == :Running
         begin
           puts "listening"
-          if clients = IO.select([@sock], nil, nil, @config[:Timeout])
-            clients.each{ |client|
               puts "have client"
-              if client_sock = accept_client(sock) 
+              client_sock = @sock.accept
+              if client_sock
+                puts "#{client_sock}"
                 puts "some client is coming"
-                    addr = client_sock.peeraddr
-                    puts "accept: #{addr[3]}:#{addr[1]}"
-                begin
-                  begin
-                    addr = client_sock.peeraddr
-                    @logger.warn "accept: #{addr[3]}:#{addr[1]}"
-                  rescue SocketError
-                    @logger.warn "accept: <address unknown>"
-                 #  raise
-                  end
 
-                  #request = HttpRequest.parse(client_sock)
-                  #request = client_sock.recvfrom(1024)[0]
                   request = client_sock.gets
                   puts "#{request}"
                   response = request
                  # response = @http.process(request) 
                   write_data(client_sock, response)
 
-                rescue Errno::ENOTCONN
-                  @logger.warn "Errno::ENOTCONN raised"
-                rescue Exception => ex
-                  @logger.error ex
-                ensure
-                  if addr
-                    @logger.warn "close: #{addr[3]}:#{addr[1]}"
-                  else
-                    @logger.warn "close: <address unknown>"
-                  end
                   client_sock.close
-                end
               end   
-            }
-          end
 
         rescue Errno::EBADF, IOError => ex
           # if the listening socket was closed in TcpServer#shutdown,
@@ -197,7 +169,7 @@ HttpServer
 config = {}
 config[:Logger] = Logger.instance
 config[:Ip] = "127.0.0.1"
-config[:Port] = 8080
+config[:Port] = 2200
 config[:Timeout] = 2.0
 
 tcp = TcpServer.new(nil, config)
