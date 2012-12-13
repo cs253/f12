@@ -1,0 +1,17 @@
+Yuanda (Tony) He
+yhe19@z.rochester.edu
+TCS453: Final Project
+
+LoggerTest
+
+This will test the logger. There will be two main targets:
+
+1.Verify appropriate handling of valid inputs:
+	-Verify that warn message can be logged
+	-Verify that error message can be logged
+	-Verify that info message can be logged
+
+
+2.Verify appropriate handling of invalid inputs:
+	-Verify that when inputs are invalid, aproperiate message is shown. 
+	-Invalid inputs includes invalid length, invalid form etc. 
