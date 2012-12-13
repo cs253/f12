@@ -4,18 +4,12 @@ require '../configio.rb'
 
 class LoggerTest < Test::Unit::TestCase
 	
-	def clean_file
-		File.open('changeme.log','w'){|file| file.truncate(0)}
-	end
-	
-	
 	def test_log_info
 		loggerInfo = Logger.instance
 		loggedText = "Info test: #{Random.rand(100000)}"
 		loggerInfo.info loggedText
 		logFile = File.read("changeme.log")
 		assert(logFile.include?(loggedText))
-		clean_file
 	end
 	
 	def test_log_warn
@@ -24,7 +18,6 @@ class LoggerTest < Test::Unit::TestCase
 		loggerWarn.warn warnText
 		logFile = File.read("changeme.log")
 		assert(logFile.include?(warnText))
-		clean_file
 	end
 	
 	def test_log_error
@@ -33,7 +26,6 @@ class LoggerTest < Test::Unit::TestCase
 		loggerError.error errorText
 		logFile = File.read("changeme.log")
 		assert(logFile.include?(errorText))
-		clean_file
 	end
 	
 	def test_setConfig
