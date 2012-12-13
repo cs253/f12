@@ -40,11 +40,11 @@ class Logger
 	private_class_method :new
 end
 
-l = Logger.instance
-l.info "The logger is starting up."
-sleep 1
-l.warn "The logger is getting tired."
-sleep 1
-l.error "The logger has fallen asleep."
-sleep 1
-l.info "The logger has woken again."
+# l = Logger.instance
+# l.info "The logger is starting up."
+# sleep 1
+# l.warn "The logger is getting tired."
+# sleep 1
+# l.error "The logger has fallen asleep."
+# sleep 1
+# l.info "The logger has woken again."
