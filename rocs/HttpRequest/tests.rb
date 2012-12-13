@@ -17,14 +17,18 @@ class SampleRequest < Struct.new("SampleRequest", :comment, :method, :content_ty
         lines = []
 
         enc_q = '?' + URI.encode_www_form(self.query)
-        encoded_body = @@content_encoders[self.content_type].call(self.body)
+        if self.method == 'POST'
+            encoded_body = @@content_encoders[self.content_type].call(self.body)
+        end
 
         lines << "#{self.method} #{URI.encode(self.path) + enc_q} HTTP/1.0"
         lines << "Content-Type: #{self.content_type}"
-        lines << "Content-Length: #{encoded_body.size}"
+        lines << "Content-Length: #{encoded_body ? encoded_body.size : 0}"
         lines << ""
-        lines << "#{encoded_body}"
-        lines << ""
+        if self.method == 'POST'
+            lines << "#{encoded_body}"
+            lines << ""
+        end
 
         lines.join("\n")
     end
@@ -42,6 +46,10 @@ end
 
 class HttpRequestTests < Test::Unit::TestCase
     @@cases = [
+        SampleRequest.new('get with args',
+                          'GET', 'application/json',
+                          '/path', {'key' => 'val'},
+                          nil),
         SampleRequest.new('post json with args',
                           'POST', 'application/json',
                           '/path', {'key' => 'val'},
