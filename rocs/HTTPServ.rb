@@ -42,14 +42,15 @@ class HttpServer
         # should be done with the tcp server
         # only that TCPServ should call HTTPServ
         # and then have the results returned.
-        tcp = TcpServer.new( self , config)
+        tcp = TcpServer.new( self , @config)
         tcp.start
     end
     def initialize
         # is it really this simple?
         # it seems like it shouldnt be but is.
         @config=ConfigIO.instance
-        @config.read
+        config_file="config.yml"
+        @config.read(config_file)
         cgi_bin_path=@config.config[cgi_bin_path]
         host=@config.config[host]
         port=@config.config[port]
@@ -72,5 +73,4 @@ server = HttpServer.new { |s|
 }
 
 server.start
-print server.process("")
 
