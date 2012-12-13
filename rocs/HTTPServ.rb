@@ -14,6 +14,7 @@ class HttpServer
     def process(req)
         @log.debug(req)
         request=HttpRequest.new(req)
+        @log.info("\n\tcalled:\t"+request.path.to_s+"\n\twith arguments:\t"+request.query.to_json.to_s)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
         # return the results of the script
@@ -26,7 +27,7 @@ class HttpServer
         stdout.close
         stderr.close
         if error!=""
-            @log.error(error)
+            @log.error("Script error:\n"+error.to_s)
             return error
         else
             return response
@@ -48,14 +49,17 @@ class HttpServer
     def initialize
         # is it really this simple?
         # it seems like it shouldnt be but is.
+        @log=Logger.instance
+        @log.info("HTTPServ starting")
         @config=ConfigIO.instance
         config_file="config.yml"
         @config.read(config_file)
+        @log.info("Config file \""+config_file+"\" read")
         cgi_bin_path=@config.config[cgi_bin_path]
         host=@config.config[host]
         port=@config.config[port]
         yield self
-        @log=Logger.instance
+        @log.info("HTTPServ started")
     end
 end
 
