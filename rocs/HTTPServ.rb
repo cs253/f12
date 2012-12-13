@@ -27,7 +27,7 @@ class HttpServer
         stdout.close
         stderr.close
         if error!=""
-            @log.error("\n\tScript error:\t"+error.to_s)
+            @log.error("Script error:\n"+error.to_s)
             return error
         else
             return response
@@ -49,14 +49,17 @@ class HttpServer
     def initialize
         # is it really this simple?
         # it seems like it shouldnt be but is.
+        @log=Logger.instance
+        @log.info("HTTPServ starting")
         @config=ConfigIO.instance
         config_file="config.yml"
         @config.read(config_file)
+        @log.info("Config file \""+config_file+"\" read")
         cgi_bin_path=@config.config[cgi_bin_path]
         host=@config.config[host]
         port=@config.config[port]
         yield self
-        @log=Logger.instance
+        @log.info("HTTPServ started")
     end
 end
 
