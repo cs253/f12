@@ -6,19 +6,19 @@ require './HttpRequest'
 class HttpRequestTests < Test::Unit::TestCase
     #map input => [path, args]
     @@cases = { 
-        'foo.com/path?arg1=val1'=> # test 1 path/arg
+        'http://foo.com/path?arg1=val1'=> # test 1 path/arg
             ['/path',
             {'arg1' => 'val1'} ],
         'http://bar.com'=> # test no path/args
             ['/',
             {} ],
-        'gaz.com/path/sub?arg1=val1&arg2=val2' => # multi path/args
+        'http://gaz.com/path/sub?arg1=val1&arg2=val2' => # multi path/args
             ['/path/sub',
             {'arg1' => 'val1', 'arg2' => 'val2'} ],
-        'www.bar.com?foo%20bar=bar%20foo' => # key/val pair with spaces
+        'http://www.bar.com?foo%20bar=bar%20foo' => # key/val pair with spaces
             ['/',
             {'foo bar' => 'bar foo'}],
-        'www.bar.com/top//sub?key=val' =>
+        'http://www.bar.com/top//sub?key=val' =>
             ['/top//sub',
             {'key' => 'val'}],
     }
