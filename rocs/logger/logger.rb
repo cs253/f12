@@ -1,5 +1,6 @@
 # Singleton logger.
 # Written by Julian Lunger for CSC 253 -- rocs project.
+require 'singleton'
 
 =begin
 	How to use:
@@ -12,6 +13,8 @@
 =end
 
 class Logger
+	include Singleton
+
 	def initialize
 		@logFile = "changeme.log"
 		@configAlreadySet = false
@@ -24,12 +27,8 @@ class Logger
 			return
 		end
 
-<<<<<<< HEAD
-		@logFile = config.config["config_file"]
 		@writeToStderr = config.config["write_to_stderr"].include?("true")
-=======
 		@logFile = config.config["log_file"]
->>>>>>> b45495ea5140217710a9ac5768d77d0f418c4469
 		@configAlreadySet = true
 	end
 	
@@ -65,12 +64,4 @@ class Logger
 			log.puts string
 		end
 	end
-
-	@@instance = Logger.new
-
-	def self.instance
-		return @@instance
-	end
-
-	private_class_method :new
 end
