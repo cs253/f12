@@ -11,7 +11,15 @@ require 'xmlsimple'
 # require 'cgi'
 
 # cgi = CGI.new('html3')
-input = File.read('test/tricky.xml')#STDIN.gets
+input = STDIN.gets
+
+if input == nil || input == ""
+  return ""
+end
+
+puts input
+exit
+
 content_type = input.split[input.split.index("Content-Type:") + 1]
 
 content_headers = input.split("\n\n")[0]

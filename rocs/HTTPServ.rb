@@ -18,7 +18,7 @@ class HttpServer
         # pass in the parameters as a hashtable
         # return the results of the script
         stdin,stdout,stderr,wait_thr=Open3.popen3("#{cgi_bin_path}#{request.path}")
-        stdin.write request.args.to_json
+        stdin.write request.query.to_json
         stdin.close 
         wait_thr.join
         response=stdout.read
