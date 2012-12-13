@@ -5,7 +5,7 @@
 #
 
 require 'socket'
-require 'config'
+#require 'config'
 require 'logger'
 
 module MicroServer
@@ -174,3 +174,12 @@ HttpServer
 
   end #end TcpServer
 end #end module
+
+config = {}
+config[:Logger] = logger.new
+config[:Ip] = "127.0.0.1"
+config[:Port] = "8080"
+config[:Timeout] = 2.0
+
+tcp = TcpServer.new(nil, config)
+tcp.start
