@@ -25,23 +25,20 @@ class HttpRequest
         @path = request.path
         @header = request.header
         @query = request.query
-        puts "#{request.body}"
         @body = request.body.nil? ? {} : parse_body(request.body)
     end
 
     def method_missing(method, *args, &block)
         name = method.to_s
         # handle regular name and safe name
-        parameter_type = name =~ /^arg_/ ? :query : (name =~ /^body_/ ? :body : nil)
-        case parameter_type
-        when :query
-            parameter = name[0..3]
+        parameter = name =~ /^arg_/ ? name[4..name.size] : name
+        case @type
+        when "GET"
             return @query[parameter]
-        when :body
-            parameter = name[0..4]
+        when "POST"
             return @body[parameter]
         else
-            super
+            super(method, *args, &block)
         end
     end
 

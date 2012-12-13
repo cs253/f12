@@ -83,7 +83,8 @@ class HttpRequestTests < Test::Unit::TestCase
             result = HttpRequest.new(http)
 
             sample.query.each{|arg, val|
-                method_name = arg.split().join('_')
+                method_name = arg
+                #method_name = arg.split().join('_')
                 assert_equal(
                     val,
                     result.send(method_name)
