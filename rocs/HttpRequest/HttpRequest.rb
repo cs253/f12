@@ -7,6 +7,7 @@ require 'webrick'
 require 'webrick/httputils'
 require 'webrick/httprequest'
 require 'webrick/https'
+require 'xmlsimple'
 
 class HttpRequest
     attr_reader :type
@@ -51,8 +52,8 @@ class HttpRequest
         case @header['content-type']
         when 'application/json'
             body = JSON.parse(content)
-        #when 'application/xml', 'text/xml'
-        #    body = Hash.from_xml(Nokogiri::XML.parse(content))
+        when 'application/xml', 'text/xml'
+            body = XmlSimple.xml_in(content, { 'KeyAttr' => 'name' })
         end
         return body
     end
