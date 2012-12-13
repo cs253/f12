@@ -14,7 +14,10 @@ class HttpRequestTests < Test::Unit::TestCase
             {} ],
         'gaz.com/path/sub?arg1=val1&arg2=val2' => # multi path/args
             ['/path/sub',
-            {'arg1' => 'val1', 'arg2' => 'val2'} ]
+            {'arg1' => 'val1', 'arg2' => 'val2'} ],
+        'www.bar.com?foo%20bar=bar%20foo' => # key/val pair with spaces
+            ['/',
+            {'foo bar' => 'bar foo'}],
     }
 
     #create tests for each case
