@@ -1,2 +1,2 @@
-log_to_stderr: true
+log_to_stderr: yes
 log_file: server.log
