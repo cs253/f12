@@ -12,6 +12,7 @@ class HttpServer
     cgi_bin_path="cgi_bin"
     config_file="default.yml"
     def process(req)
+        @log.debug(req)
         request=HttpRequest.new(req)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable

@@ -7,7 +7,7 @@ class ConfigIO
     attr_reader :config
 
     def initialize
-        @default = {}
+        @default = {writeToStderr: "false"}
         #TODO someone needs to fill in the default config
         @config = Hash.new
     end
@@ -24,8 +24,8 @@ class ConfigIO
         File.open("config.yml", "w") { |f| f.write(@config.to_yaml)}
     end
 
-    def read
-        raw_config = YAML.load_file("config.yml")
+    def read(file)
+        raw_config = YAML.load_file(file)
         raw_config.each{ |k, v|
            @config[k] = v
         }
