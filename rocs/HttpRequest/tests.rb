@@ -60,7 +60,7 @@ class HttpRequestTests < Test::Unit::TestCase
                           nil),
         SampleRequest.new('post json with args',
                           'POST', 'application/json',
-                          '/path', {'key' => 'val'},
+                          '/path', {},
                           {'data' => 'this is the body'}),
     ]
 
