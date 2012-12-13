@@ -14,11 +14,12 @@ class HttpServer
     def process(req)
         @log.debug(req)
         request=HttpRequest.new(req)
+        @log.info("called:\t"+request.path.to_s+"\n\twith arguments:\t"+request.query.to_json.to_s)
         # invoke the script in cgi_bin_path
         # pass in the parameters as a hashtable
         # return the results of the script
         stdin,stdout,stderr,wait_thr=Open3.popen3("#{cgi_bin_path}#{request.path}")
-        stdin.write request.args.to_json
+        stdin.write request.query.to_json
         stdin.close 
         wait_thr.join
         response=stdout.read
