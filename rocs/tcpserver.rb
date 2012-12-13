@@ -39,7 +39,7 @@ HttpServer
     attr_accessor :http, :sock
 
     def initialize(http, config=Config::General)
-      @config = config.config
+      @config = config
       @http = http
       @status = :Stop
       @config[:Logger] ||= Logger.instance

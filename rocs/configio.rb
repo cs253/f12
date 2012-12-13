@@ -6,6 +6,14 @@ class ConfigIO
 
     attr_reader :config
 
+    def [](key)
+        @config[key]
+    end
+
+    def []=(key, value)
+        @config[key] = value
+    end
+
     def initialize
         @default = {log_file: "server.log"}
         #TODO someone needs to fill in the default config
