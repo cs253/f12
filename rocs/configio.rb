@@ -7,7 +7,7 @@ class ConfigIO
     attr_reader :config
 
     def initialize
-        @default = {}
+        @default = {writeToStderr: "false"}
         #TODO someone needs to fill in the default config
         @config = Hash.new
     end

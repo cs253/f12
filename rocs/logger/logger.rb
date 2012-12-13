@@ -15,6 +15,7 @@ class Logger
 	def initialize
 		@logFile = "changeme.log"
 		@configAlreadySet = false
+		@writeToStderr = false
 	end
 
 	def setConfig(config)
@@ -23,7 +24,12 @@ class Logger
 			return
 		end
 
+<<<<<<< HEAD
+		@logFile = config.config["config_file"]
+		@writeToStderr = config.config["write_to_stderr"].include?("true")
+=======
 		@logFile = config.config["log_file"]
+>>>>>>> b45495ea5140217710a9ac5768d77d0f418c4469
 		@configAlreadySet = true
 	end
 	
@@ -39,8 +45,13 @@ class Logger
 		log("info", string)
 	end
 
+	def debug(string)
+		log("debug", string)
+	end
+
 	def log(type, string)
 		line = getPrefix(type) + string
+		$stderr.puts line if @writeToStderr
 		writeToFile(line)
 	end
 		
