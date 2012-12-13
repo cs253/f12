@@ -1,3 +1,6 @@
+# Singleton logger.
+# Written by Julian Lunger for CSC 253 -- rocs project.
+
 class Logger
 	def initialize
 		@logFile = "changeme.log"
