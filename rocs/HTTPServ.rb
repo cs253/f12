@@ -71,5 +71,4 @@ server = HttpServer.new { |s|
 }
 
 server.start
-print server.process("")
 
