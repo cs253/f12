@@ -39,19 +39,19 @@ HttpServer
     attr_accessor :http, :sock
 
     def initialize(http, config=Config::General)
-      @config = config
+      @config = config.config
       @http = http
       @status = :Stop
-      @config[:Logger] ||= Log::new
+      @config[:Logger] ||= Logger.instance
       @logger = @config[:Logger]
 
       #create IPv4 socket only
-      @sock = TCPServer.new(@config[:Ip], @config[:Port])
+      @sock = TCPServer.new(@config["Ip"], @config["Port"])
 #      @sock = Socket.new(Socket::AF_INET, Socket::SOCK_STREAM, 0)
 #      sockaddr = Socket.pack_sockaddr_in( @config[:Port], @config[:Ip] )
 #      @sock.bind( sockaddr )
 #      @sock.listen(50)
-      @config[:Port] = @sock.addr[1] if @config[:Port] == 0
+      @config["Port"] = @sock.addr[1] if @config["Port"] == 0
 
     end
 
@@ -62,7 +62,7 @@ HttpServer
     def start
       raise "#{self.class} already started." if @status != :Stop
       
-      @logger.info "#{self.class}#start : pid=#{$$} ip=#{@config[:Ip]} port=#{@config[:Port]}"
+      @logger.info "#{self.class}#start : pid=#{$$} ip=#{@config["Ip"]} port=#{@config["Port"]}"
       @status = :Running
       while @status == :Running
         begin
@@ -76,7 +76,8 @@ HttpServer
                   request = client_sock.gets
                   puts "#{request}"
                   response = request
-                 # response = @http.process(request) 
+                  response = @http.process(request)
+                  @logger.info(response.to_s)
                   write_data(client_sock, response)
 
                   client_sock.close
@@ -166,11 +167,11 @@ HttpServer
   end #end TcpServer
 #end #end module
 
-config = {}
-config[:Logger] = Logger.instance
-config[:Ip] = "127.0.0.1"
-config[:Port] = 2200
-config[:Timeout] = 2.0
+# config = {}
+# config[:Logger] = Logger.instance
+# config[:Ip] = "127.0.0.1"
+# config[:Port] = 2200
+# config[:Timeout] = 2.0
 
-tcp = TcpServer.new(nil, config)
-tcp.start
+# tcp = TcpServer.new(nil, config)
+# tcp.start
