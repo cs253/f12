@@ -24,12 +24,8 @@ class Logger
 			return
 		end
 
-<<<<<<< HEAD
-		@logFile = config.config["config_file"]
 		@writeToStderr = config.config["write_to_stderr"].include?("true")
-=======
 		@logFile = config.config["log_file"]
->>>>>>> b45495ea5140217710a9ac5768d77d0f418c4469
 		@configAlreadySet = true
 	end
 	
