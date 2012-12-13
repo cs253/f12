@@ -7,6 +7,7 @@ require 'webrick'
 require 'webrick/httputils'
 require 'webrick/httprequest'
 require 'webrick/https'
+require 'xmlsimple'
 
 class HttpRequest
     attr_reader :type
@@ -15,53 +16,34 @@ class HttpRequest
     attr_reader :query
     attr_reader :body
 
-    def initialize(request)
+    def initialize(request_str)
         # spoof a socket read on the request string
-        req_spoof = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
-        StringIO.open(request) { |socket| req_spoof.parse(socket) }
+        request = WEBrick::HTTPRequest.new(WEBrick::Config::HTTP)
+        socket_spoof = StringIO.open(request_str)
+        request.parse(socket_spoof)
         # grab HTTP request parameters
-        @type = req_spoof.request_method
-        @path = req_spoof.path
-        @header = req_spoof.header
-        @query = req_spoof.query
-        @body = req_spoof.body.nil? ? {} : parse_body(req_spoof.body)
+        @type = request.request_method
+        @path = request.path
+        @header = request.header
+        @query = request.query
+        @body = request.body.nil? ? {} : parse_body(request.body)
     end
 
     def method_missing(method, *args, &block)
         name = method.to_s
         # handle regular name and safe name
-        parameter_type = name =~ /^arg_/ ? :query : (name =~ /^body_/ ? :body : nil)
-        case parameter_type
-        when :query
-            parameter = name[0..3]
+        parameter = name =~ /^arg_/ ? name[4..name.size] : name
+        case @type
+        when "GET"
             return @query[parameter]
-        when :body
-            parameter = name[0..4]
+        when "POST"
             return @body[parameter]
         else
-            super
+            super(method, *args, &block)
         end
     end
 
     private
-
-    def parse_args(query_str)
-        args = {}
-        # split on mappings
-        query_str.split(/&/).each do |param|
-            # extract mapping from substring
-            if param.index('=').nil? then
-                raise ArgumentError, "mapping is missing = operator: \"#{param}\""
-            end
-            key, value = *param.split(/\=/)
-            if key == '' or value == '' then
-                raise ArgumentError, "query string contained invalid mapping: \"#{key}=#{value}\""
-            end
-            key.gsub!(/\s+/, " ")
-            args[key] = value
-        end
-        return args
-    end
 
     def parse_body(content)
         body = {}
@@ -70,8 +52,8 @@ class HttpRequest
         case @header['content-type']
         when 'application/json'
             body = JSON.parse(content)
-        #when 'application/xml', 'text/xml'
-        #    body = Hash.from_xml(Nokogiri::XML.parse(content))
+        when 'application/xml', 'text/xml'
+            body = XmlSimple.xml_in(content, { 'KeyAttr' => 'name' })
         end
         return body
     end

@@ -17,16 +17,16 @@ class SampleRequest < Struct.new("SampleRequest", :comment, :method, :content_ty
         lines = []
 
         enc_q = '?' + URI.encode_www_form(self.query)
-        if self.method == 'POST'
-            encoded_body = @@content_encoders[self.content_type].call(self.body)
+        if self.body
+            enc_body = @@content_encoders[self.content_type].call(self.body)
         end
 
         lines << "#{self.method} #{URI.encode(self.path) + enc_q} HTTP/1.0"
         lines << "Content-Type: #{self.content_type}"
-        lines << "Content-Length: #{encoded_body ? encoded_body.size : 0}"
+        lines << "Content-Length: #{enc_body ? enc_body.size : 0}"
         lines << ""
-        if self.method == 'POST'
-            lines << "#{encoded_body}"
+        if enc_body
+            lines << "#{enc_body}"
             lines << ""
         end
 
@@ -50,35 +50,19 @@ class HttpRequestTests < Test::Unit::TestCase
                           'GET', 'application/json',
                           '/path', {'key' => 'val'},
                           nil),
+        SampleRequest.new('get with complex args',
+                          'GET', 'application/json',
+                          '/path', {'key key' => 'val val', 'bar' => 'gaz'},
+                          nil),
+        SampleRequest.new('get no args',
+                          'GET', 'application/json',
+                          '/path/sub', {},
+                          nil),
         SampleRequest.new('post json with args',
                           'POST', 'application/json',
-                          '/path', {'key' => 'val'},
+                          '/path', {},
                           {'data' => 'this is the body'}),
     ]
-    p @@cases[0]
-
-    #
-    #map input => [headers, path, args]
-    #@@cases = { 
-    #    'http://foo.com/path?arg1=val1'=> # test 1 path/arg
-    #        ['/path',
-    #        {'arg1' => 'val1'} ],
-    #    'http://bar.com'=> # test no path/args
-    #        ['/',
-    #        {} ],
-    #    'http://gaz.com/path/sub?arg1=val1&arg2=val2' => # multi path/args
-    #        ['/path/sub',
-    #        {'arg1' => 'val1', 'arg2' => 'val2'} ],
-    #    'http://www.bar.com?foo%20bar=bar%20foo' => # key/val pair with spaces
-    #        ['/',
-    #        {'foo bar' => 'bar foo'}],
-    #    'http://www.bar.com/top//sub?key=val' =>
-    #        ['/top//sub',
-    #        {'key' => 'val'}],
-    #    'http://www.bar.com/path?foo%09bar=bar%09foo' =>
-    #        ['/path',
-    #        {"foo bar" => "bar\tfoo"}],
-    #}
 
     #create tests for each case
     @@cases.each do |sample|
@@ -86,7 +70,7 @@ class HttpRequestTests < Test::Unit::TestCase
         http = sample.to_http
 
         basic_test_name = ("test_basic_" + comment).to_sym
-        #meta_test_name = ("test_meta_" + comment).to_sym
+        meta_test_name = ("test_meta_" + comment).to_sym
 
         send :define_method, basic_test_name do
             result = HttpRequest.new(http)
@@ -95,16 +79,17 @@ class HttpRequestTests < Test::Unit::TestCase
             assert_equal(sample.query, result.query, http)
         end
 
-        #send :define_method, meta_test_name do
-        #    result = HttpRequest.new(input)
+        send :define_method, meta_test_name do
+            result = HttpRequest.new(http)
 
-        #    expected[1].each{|arg, val|
-        #        method_name = arg.split().join('_')
-        #        assert_equal(
-        #            val,
-        #            result.send(method_name)
-        #        )
-        #    }
-        #end
+            sample.query.each{|arg, val|
+                method_name = arg
+                #method_name = arg.split().join('_')
+                assert_equal(
+                    val,
+                    result.send(method_name)
+                )
+            }
+        end
     end
 end
